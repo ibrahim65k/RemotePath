@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://ibrahim65k.github.io/RemotePath/sitemap.xml

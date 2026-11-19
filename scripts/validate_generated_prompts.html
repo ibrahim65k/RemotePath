@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>PROMPT_AUDIT_RUNNING</title></head>
+<body>
+<pre id="audit">Prompt audit is running.</pre>
+<script src="../assets/js/prompt-builder.js"></script>
+<script>
+(async function(){
+  const failures=[];
+  let checked=0;
+  const has=(prompt,value)=>typeof value==='string'&&value.trim()&&prompt.includes(value.trim());
+  try{
+    const [roles,guides]=await Promise.all([
+      fetch('../data/specializations.json').then(r=>{if(!r.ok)throw Error('specializations fetch failed');return r.json()}),
+      fetch('../data/prompt-guidance.json').then(r=>{if(!r.ok)throw Error('prompt-guidance fetch failed');return r.json()})
+    ]);
+    const byId=new Map(roles.map(role=>[role.id,role]));
+    const guideCounts=new Map();
+    const requiredStructure=[
+      '1. Profession overview:','2. Actual workflow:','3. Realistic work examples:','4. Services, contributions, and deliverables:',
+      '5. Work models:','6. Skills and qualifications:','7. Equipment:','8. English:','9. Tools:','10. Platforms:',
+      '11. Income:','12. Tailored learning roadmap:','13. Practice and proof:','14. First opportunity:','15. Career growth:',
+      '16. AI and outlook:','17. Risks and professional duties:','18. Visual teaching:','19. Glossary and action plan:'
+    ];
+    for(const guide of guides)guideCounts.set(guide.specializationId,(guideCounts.get(guide.specializationId)||0)+1);
+    const arrays=['domainKnowledge','typicalTasks','commonDeliverables','keySkills','distinctiveConsiderations','professionalCautions','relatedToolAndPlatformGuidance','learningPriorities'];
+    for(const guide of guides){
+      const role=byId.get(guide.specializationId);
+      if(!role){failures.push(`${guide.specializationId}: no matching specialization`);continue}
+      if(guideCounts.get(role.id)!==1)failures.push(`${role.id}: guidance match count is ${guideCounts.get(role.id)}`);
+      const prompt=window.RemotePathPromptBuilder.build(role,guide);
+      checked++;
+      const check=(condition,label)=>{if(!condition)failures.push(`${role.id}: ${label}`)};
+      check(prompt.length>1000,'empty or incomplete standalone prompt');
+      check(has(prompt,role.title),'role title missing');
+      check(has(prompt,guide.professionContext),'profession context missing');
+      check(has(prompt,guide.categoryContext),'category context missing');
+      for(const field of arrays){
+        const value=guide[field];
+        check(Array.isArray(value)&&value.length>0,`${field} is empty`);
+        if(Array.isArray(value))for(const item of value){
+          check(typeof item==='string'&&item.trim(),`${field} contains a non-text/empty item`);
+          if(typeof item==='string'&&item.trim())check(has(prompt,item),`${field} value omitted: ${item.slice(0,90)}`);
+        }
+      }
+      if(Array.isArray(guide.relatedRoleComparisons)&&guide.relatedRoleComparisons.length){
+        for(const relatedRole of guide.relatedRoleComparisons)check(has(prompt,relatedRole),`related role omitted: ${relatedRole}`);
+      }else check(prompt.includes('Identify only genuinely adjacent roles and explain the difference.'),'empty-comparison fallback instruction missing');
+      check(prompt.includes('Distinctive professional considerations:'),'distinctive considerations label missing');
+      check(prompt.includes('Profession-specific professional cautions and boundaries:'),'caution label missing');
+      check(prompt.indexOf('Distinctive professional considerations:')<prompt.indexOf('Profession-specific professional cautions and boundaries:'),'distinctive/caution fields are not separate');
+      check(prompt.includes('natural Egyptian colloquial Arabic (Masri)'),'Egyptian Arabic instruction missing');
+      check(prompt.includes('Keep software, platform, technical, professional, standard, and methodology names in English'),'English terminology instruction missing');
+      check(prompt.includes('Assume I live in Egypt'),'Egypt learner context missing');
+      check(prompt.includes('Verify Egypt registration, project eligibility, and payment separately'),'Egypt research requirement missing');
+      check(prompt.includes('never fabricate averages, currency conversion, guaranteed monthly income'),'income accuracy rule missing');
+      check(prompt.includes('17. Risks and professional duties:'),'shared professional-risk section missing');
+      check(prompt.includes('Explicitly address every supplied profession-specific caution'),'mandatory caution coverage instruction missing');
+      for(const heading of requiredStructure)check(prompt.includes(heading),`shared guide section missing: ${heading}`);
+      check(prompt.includes('direct links and publication/access dates'),'current-source citation instructions missing');
+      check(prompt.includes('Never infer access from a working homepage'),'platform availability safeguard missing');
+      check(prompt.includes('For income, separate international advertised rates from Egypt/local compensation'),'income-context safeguard missing');
+      check(!/undefined|null|\[object Object\]|\[\s*\]/i.test(prompt),'technical placeholder leaked into prompt');
+    }
+    const sparseRole={id:'test-role',title:'Test Role'};
+    const sparse=window.RemotePathPromptBuilder.build(sparseRole,{specializationId:'test-role'});
+    if(!sparse.includes('No profession-specific cautions were supplied'))failures.push('missing-caution fallback is absent');
+    if(/undefined|null|\[object Object\]/i.test(sparse))failures.push('sparse-record placeholder leaked');
+    const malformed=window.RemotePathPromptBuilder.build(sparseRole,{specializationId:'test-role',professionalCautions:{bad:true},distinctiveConsiderations:[],domainKnowledge:[]});
+    if(!malformed.includes('No profession-specific cautions were supplied'))failures.push('malformed optional-field fallback failed');
+    if(/undefined|null|\[object Object\]/i.test(malformed))failures.push('malformed optional field leaked');
+    const focused=['bug-bounty-hunter','medical-transcriptionist','remote-bookkeeper','online-survey-participant','translator','ai-response-evaluator'];
+    for(const id of focused){
+      const role=byId.get(id),guide=guides.find(g=>g.specializationId===id);
+      if(!role||!guide){failures.push(`${id}: focused caution fixture missing`);continue}
+      const prompt=window.RemotePathPromptBuilder.build(role,guide);
+      for(const caution of guide.professionalCautions||[])if(!has(prompt,caution))failures.push(`${id}: focused professional caution omitted`);
+    }
+    document.title=`PROMPT_AUDIT_${failures.length?'FAIL':'PASS'}_${checked}_${failures.length}`;
+    document.querySelector('#audit').textContent=JSON.stringify({specializations:roles.length,guides:guides.length,promptsGenerated:checked,failedChecks:failures.length,failures:failures.slice(0,100)},null,2);
+  }catch(error){
+    document.title='PROMPT_AUDIT_ERROR';
+    document.querySelector('#audit').textContent=String(error&&error.stack||error);
+  }
+})();
+</script>
+</body>
+</html>

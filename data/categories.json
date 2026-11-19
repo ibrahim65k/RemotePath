@@ -1,0 +1,122 @@
+[
+  {
+    "id": "programming-software-development",
+    "slug": "programming-software-development",
+    "name": "Programming & Software Development",
+    "icon": "</>",
+    "description": "Build websites, apps, and software systems for a connected world.",
+    "specializationCount": 21
+  },
+  {
+    "id": "artificial-intelligence-ai-services",
+    "slug": "artificial-intelligence-ai-services",
+    "name": "Artificial Intelligence & AI Services",
+    "icon": "✳",
+    "description": "Apply AI tools and workflows to solve practical business problems.",
+    "specializationCount": 15
+  },
+  {
+    "id": "ai-training-data-annotation",
+    "slug": "ai-training-data-annotation",
+    "name": "AI Training & Data Annotation",
+    "icon": "◈",
+    "description": "Help improve AI systems through careful data work and evaluation.",
+    "specializationCount": 18
+  },
+  {
+    "id": "writing-translation-localization",
+    "slug": "writing-translation-localization",
+    "name": "Writing, Translation & Localization",
+    "icon": "Aa",
+    "description": "Create and adapt clear content for readers around the world.",
+    "specializationCount": 20
+  },
+  {
+    "id": "graphic-design-visual-content",
+    "slug": "graphic-design-visual-content",
+    "name": "Graphic Design & Visual Content",
+    "icon": "▧",
+    "description": "Shape ideas into visual identities, graphics, and digital assets.",
+    "specializationCount": 16
+  },
+  {
+    "id": "video-audio-media-production",
+    "slug": "video-audio-media-production",
+    "name": "Video, Audio & Media Production",
+    "icon": "▶",
+    "description": "Produce engaging video, audio, and media for online audiences.",
+    "specializationCount": 15
+  },
+  {
+    "id": "marketing-social-media-ecommerce",
+    "slug": "marketing-social-media-ecommerce",
+    "name": "Marketing, Social Media & E-commerce",
+    "icon": "↗",
+    "description": "Help brands reach people and grow through digital channels.",
+    "specializationCount": 14
+  },
+  {
+    "id": "virtual-assistance-administrative-services",
+    "slug": "virtual-assistance-administrative-services",
+    "name": "Virtual Assistance & Administrative Services",
+    "icon": "⌘",
+    "description": "Keep remote teams and businesses organized and moving forward.",
+    "specializationCount": 16
+  },
+  {
+    "id": "online-teaching-training",
+    "slug": "online-teaching-training",
+    "name": "Online Teaching & Training",
+    "icon": "▤",
+    "description": "Share knowledge and help learners make progress from anywhere.",
+    "specializationCount": 14
+  },
+  {
+    "id": "software-testing-product-testing",
+    "slug": "software-testing-product-testing",
+    "name": "Software Testing & Product Testing",
+    "icon": "✓",
+    "description": "Improve digital products by finding issues and testing experiences.",
+    "specializationCount": 12
+  },
+  {
+    "id": "cybersecurity-bug-bounty",
+    "slug": "cybersecurity-bug-bounty",
+    "name": "Cybersecurity & Bug Bounty",
+    "icon": "⌑",
+    "description": "Help protect systems, data, and users through security work.",
+    "specializationCount": 15
+  },
+  {
+    "id": "research-surveys-online-studies",
+    "slug": "research-surveys-online-studies",
+    "name": "Research, Surveys & Online Studies",
+    "icon": "⌕",
+    "description": "Support decisions with online research, feedback, and studies.",
+    "specializationCount": 10
+  },
+  {
+    "id": "digital-products-online-selling",
+    "slug": "digital-products-online-selling",
+    "name": "Digital Products & Online Selling",
+    "icon": "◇",
+    "description": "Create and sell useful digital goods through online channels.",
+    "specializationCount": 16
+  },
+  {
+    "id": "customer-support-sales-community-management",
+    "slug": "customer-support-sales-community-management",
+    "name": "Customer Support, Sales & Community Management",
+    "icon": "◎",
+    "description": "Support customers, build relationships, and care for communities.",
+    "specializationCount": 13
+  },
+  {
+    "id": "specialized-professional-remote-services",
+    "slug": "specialized-professional-remote-services",
+    "name": "Specialized Professional Remote Services",
+    "icon": "✣",
+    "description": "Offer specialist expertise to clients and teams across borders",
+    "specializationCount": 14
+  }
+]

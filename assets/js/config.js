@@ -1,0 +1,1 @@
+window.REMOTEPATH_CONFIG=Object.freeze({repository:'RemotePath',username:'ibrahim65k',productionUrl:'https://ibrahim65k.github.io/RemotePath/',basePath:'/RemotePath/'});

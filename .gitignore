@@ -1,0 +1,21 @@
+# OS and editor files
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/
+*.log
+_exports/
+_site/
+.env
+.env.*
+!.env.example
+.cache/
+.pytest_cache/
+__pycache__/
+*.py[cod]
+playwright-report/
+test-results/
+coverage/
+.qa-temp/
+.browser-cache/
